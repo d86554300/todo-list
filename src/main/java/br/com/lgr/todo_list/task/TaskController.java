@@ -58,16 +58,15 @@ public class TaskController {
         if (task == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Task not found.");
         }
-        if (task != null) {
-            var idUser = request.getAttribute("idUser");
-            if (!task.getIdUser().equals(idUser)) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuario nao tem permissao de alterar essa task.");
-            }
 
-            Utils.copyNonNullProperties(taskModel, task);
-
-            var taskUpdated = this.taskRepository.save(task);
-            return ResponseEntity.status(HttpStatus.OK).body(taskUpdated);
+        var idUser = request.getAttribute("idUser");
+        if (!task.getIdUser().equals(idUser)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuario nao tem permissao de alterar essa task.");
         }
+
+        Utils.copyNonNullProperties(taskModel, task);
+
+        var taskUpdated = this.taskRepository.save(task);
+        return ResponseEntity.status(HttpStatus.OK).body(taskUpdated);
     }
 }
